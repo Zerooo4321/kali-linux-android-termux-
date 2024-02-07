@@ -1,0 +1,136 @@
+ 1: Ping: checks the connection to another device on the network or internet.
+
+  ping <IP address or website>
+
+ 2: Tracert: shows the path that network packets take to reach a destination.
+
+   tracert <IP address or website>
+
+ 3: Pathping: combines features of Ping and Tracert to show network path and packet loss.
+  
+   pathping <IP address or website>
+
+ 4: Ipconfig: displays the IP configuration for all network interfaces.
+
+   ipconfig
+
+ 5: Netstat: displays active network connections, routing tables, and network statistics.
+
+   netstat
+ 
+ 6: Netsh: allows you to view and modify network configuration settings.
+
+   netsh <command>
+
+ 7: Route: displays and modifies IP routing table.
+
+  route print
+
+ 8: Finger: displays information about a user on a remote system.
+
+   finger <username>
+
+ 9: Telnet: allows you to establish a connection to a remote device over a network.
+
+ telnet <IP address or website>
+
+10: Net: displays information about network connections, statistics, and services.
+
+ net <command>
+
+11: Route: displays and modifies IP routing table.
+
+  route print
+
+12: Finger: displays information about a user on a remote system.
+
+
+  finger <username>
+
+13: Telnet: allows you to establish a connection to a remote device over a network.
+
+   telnet <IP address or website>
+
+14: Net: displays information about network connections, statistics, and service
+
+  net <command>
+
+15: Nbtstat: displays NetBIOS over TCP/IP (NetBT) statistics and connections
+
+  nbtstat -a
+
+16: Dcdiag: performs diagnostics on domain controllers and domain configurations.
+
+ 
+ dcdiag
+
+17: Dnsdump: captures DNS traffic and displays it in a readable format.
+
+  
+ dnsdump <IP address or website>
+
+18: Nmap: network scanner and port mapper.
+
+  nmap <IP address or website>
+
+19: Wireshark: network protocol analyzer that captures and analyzes network traffic.
+
+  wireshark
+
+20: Tcpview: displays active TCP connections and listening ports.
+
+ tcpview
+
+21: Nirsoft: provides a collection of free network tools.
+
+ 
+ <download from https://www.nirsoft.net/>
+
+22: Nirsoft CurrPorts: displays all currently opened ports and the process that opened them.
+
+  currports
+
+23: Nirsoft NetStatView: displays network statistics, including sent and received data.
+
+
+ netstatview 
+
+24: Nirsoft SmartSniff: network sniffer that captures and analyzes network traffic.
+
+   smartsniff
+
+25: Nirsoft WirelessKeyView: displays the wireless keys of all profiles stored on your computer.
+
+ 
+ wirelesskeyview
+
+ 
+26: Nirsoft NetworkMeter: displays network usage statistics, including sent and received data.
+
+  networkmeter
+
+27: Nirsoft NetworkMonitor: displays network usage statistics, including sent and received data.
+
+ 
+networkmonitor
+
+28: Nirsoft NetworkTrafficView: displays network traffic statistics, including sent and received data.
+
+ 
+  networktrafficview
+
+29:Nirsoft NetworkUsage: displays network usage statistics, including sent and received data.
+
+  
+   networkusage
+
+30: Nirsoft NetworkUsageMonitor: displays network usage statistics, including sent and received data.
+
+
+   networkusagemonitor
+
+ 31: Nirsoft NetworkUsageView: displays network usage statistics, including sent and received data.
+
+
+   networkusageview
+
