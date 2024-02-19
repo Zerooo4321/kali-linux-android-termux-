@@ -1,0 +1,12 @@
+git clone https://github.com/FDX100/Auto_Tor_IP_changer.git
+ls
+cd Auto_Tor_IP_changer
+ls
+ chmod +x install.py   
+chmod +x autoTOR.py
+ls
+ python3  install.py
+Y
+aut
+and type 5
+and type 0
