@@ -1,0 +1,42 @@
+#include<stdio.h>
+
+ void main() {
+
+	int sbi;
+
+	printf("Enter Your Sbi PIN...!\n");
+	scanf("%d",&sbi);
+
+	if(sbi==1234)
+
+	{
+
+		printf("MR RAJ YOUR BLANCE 123123");
+	}
+
+	else if(sbi==1987)
+
+	{
+
+		printf("MR OM YOUR BLANCE 15464");
+	}
+
+	else if(sbi==4533)
+
+
+	{
+
+		printf("MR SHIV YOUR BLANCE 187878");
+	}
+
+
+	else
+
+	{
+
+		printf("ACCES FILDE");
+	}
+
+
+
+}
