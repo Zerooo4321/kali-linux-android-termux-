@@ -1,0 +1,7 @@
+# text to voice in python
+# first install in your system cmd 
+# pip install pyttsx3 
+import pyttsx3
+a = pyttsx3.init()
+a.say("hi make this text voice in python this qrcode write alan rajput")
+a.runAndWait()
