@@ -1,0 +1,5 @@
+# YouTube all Videos Download in python
+# first install in your system cmd 
+# pip install pytude 
+from pytube import YouTube 
+YouTube('#Remove this text and past here youtube links').streams.first().download()  
