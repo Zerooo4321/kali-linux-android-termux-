@@ -1,0 +1,6 @@
+# qrcode make in python any text
+# first install in your system cmd 
+# pip install qrcode
+import qrcode
+a =qrcode.make("qrcode in python")
+a.save('qrcode.jpg')
