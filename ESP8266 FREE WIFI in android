@@ -1,0 +1,26 @@
+#esp8266 FREE WIFI file link
+https://drive.google.com/drive/folders/1LRIoMs_Zs3SsNx-xiSaePXD8xC8fNefd?usp=drive_link
+# and upload file to apk
+https://apkpure.com/esp8266-loader-blynk-uploader/com.bluino.esploader
+#This is the main page. Here the user will write his password and send it
+172.0.0.1/index
+#This is the post page. The user will be redirected here after posting the password.
+172.0.0.1/post
+#This is where the attacker can retrieve all the passwords that has been posted.
+172.0.0.1/pass
+#Here the attacker can change the SSID name of the Access Point on the go.
+172.0.0.1/ssid
+
+#any problem here pls look this YOUTUBE video
+https://www.youtube.com/watch?v=v4-5oX3RG94&feature=youtu.be
+#and WEBSITE
+https://github.com/adamff-dev/ESP8266-Captive-Portal?tab=readme-ov-file
+####################################################################################################################################################################
+About this project
+WiFi captive portal for the NodeMCU (ESP8266 Module) with DNS spoofing.
+
+The built-in LED will blink 5 times when a password is posted.
+
+Warning! Your saved passwords will not disappear when you restart/power off the ESP8266.
+
+Note: If you want to see the stored passwords go to "172.0.0.1/pass". For changing the SSID, go to "172.0.0.1/ssid"
