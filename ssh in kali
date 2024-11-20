@@ -1,0 +1,5 @@
+systemctl status  ssh #NOTE ACTIVE
+systemctl staart  ssh #AND ENTER THE PASSWORD
+systemctl status  ssh # AFTER USEING THIS COMMEND ACTIVE SHOWING 
+ssh username@92.168.60.. #HIT ENTER AND ENTER THE  PASSWORD....!
+#OR USE THE IS OTHER'S USER TO CONNECT WITH SSH 
