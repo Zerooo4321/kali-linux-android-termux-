@@ -1,0 +1,15 @@
+first open cmd
+type this URL
+winget install Microsoft.WindowsTerminal Microsoft.PowerToys Microsoft.VisualStudioCode
+
+################################################################################################################
+
+If you need more comprehensive log files, that provide the complete communication
+with the CDNs and sources, include --verbose or --verbose-logs on the command line
+as well. Here are some examples of using the --verbose-logs option:
+
+> winget install vscode --verbose-logs
+> winget search -n visual --verbose-logs
+> winget source add -n mysource -t Microsoft.REST -a https://www.contoso.org --verbose
+more about this see this pdf link 
+https://drive.google.com/file/d/1UaESCEpObKpNFcO0N4ajYsw2j73AU8FG/view?usp=drive_link
