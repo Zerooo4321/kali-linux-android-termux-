@@ -1,0 +1,7 @@
+sudo iptables -L # details of list
+# block ip one
+sudo iptables -A INPUT -s 192.168.145.128 -j REJECT
+# block all ip
+sudo iptables -A INPUT -j DROP
+# reset
+sudo iptables -F
