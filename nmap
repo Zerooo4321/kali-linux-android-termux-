@@ -1,0 +1,196 @@
+                                  BASIC SCANNNG TECHNIQUE:
+1. nmap Target_IP(singgle IP Scan)
+2. nmap Terget_1 Terget_2(Scan Multiple Target)
+3. Nmap 192.168.1.0-100 or 192.168.1.0-254(Scan a range of IP)
+4. Nmap 192.168.1.0/24(Scan Entire Subnet) 
+5. Nmap -iL list.txt
+6. Nmap 192.168.1.0/24 --exclude 192.168.1.112
+                                  DISCOVERY OPTIONS:
+1. Nmap -Pn 192.168.1.112 (Don't Ping)
+2. Nmap -sP 192.168.1.112 (Ping Only Scan)
+3. Nmap --traceroute demo.testfire.net
+                                  ADVANCED SCANNING OPTIONS:
+
+1. Nmap -sS 192.168.1.112 (TCP SYN Scan)
+2. Nmap -sT 192.168.1.112 (TCP Connect Scan)
+3. Nmap -sF 192.168.1.112 (TCP Fin Scan)
+4. Nmap -sX 192.168.1.112 (Xass Scan)
+                                PORT SCANNING OPTIONS
+1. Nmap -F 192.168.1.112 (Fast Scan Only 100 Ports)
+2. Nmap -p 80 192.168.1.112 (Scan Specific Ports)
+                                OPERSTING SYSTEM OR SERVICE DETECTION:
+1. Nmap -O 192.168.1.112(Operating System Detection)
+2. Nmap -sV 192.168.1.112(Service Version Detection)
+
+
+ sudo nmap -sn 192.168.145.134 -PR
+Starting Nmap 7.95 ( https://nmap.org ) at 2025-05-16 10:58 EDT
+Nmap scan report for 192.168.145.134
+Host is up (0.00034s latency).
+MAC Address: 00:0C:29:B5:36:A1 (VMware)
+Nmap done: 1 IP address (1 host up) scanned in 0.16 seconds
+
+
+sudo nmap -sn --traceroute fasebook.com
+Starting Nmap 7.95 ( https://nmap.org ) at 2025-05-16 11:01 EDT
+Nmap scan report for fasebook.com (163.70.146.23)
+Host is up (0.00078s latency).
+Other addresses for fasebook.com (not scanned): 2a03:2880:f0a6:18:face:b00c:0:2
+rDNS record for 163.70.146.23: edge-star-shv-01-del2.facebook.com
+
+
+Nmap -sV 103.174.152.18 -p ftp
+Starting Nmap 7.95 ( https://nmap.org ) at 2025-05-18 08:10 EDT
+Nmap scan report for 103.174.152.18
+Host is up (0.035s latency).
+
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     Pure-FTPd
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 12.99 seconds
+
+nmap -Pn 192.168.145.134 -F -v -sV                                                                                                                          
+Starting Nmap 7.95 ( https://nmap.org ) at 2025-05-27 10:45 EDT
+NSE: Loaded 47 scripts for scanning.
+Initiating ARP Ping Scan at 10:45
+Scanning 192.168.145.134 [1 port]
+Completed ARP Ping Scan at 10:45, 0.07s elapsed (1 total hosts)
+Initiating Parallel DNS resolution of 1 host. at 10:45
+Completed Parallel DNS resolution of 1 host. at 10:45, 0.03s elapsed
+Initiating SYN Stealth Scan at 10:45
+Scanning 192.168.145.134 [100 ports]
+Discovered open port 445/tcp on 192.168.145.134
+Discovered open port 135/tcp on 192.168.145.134
+Discovered open port 139/tcp on 192.168.145.134
+Discovered open port 49155/tcp on 192.168.145.134
+Discovered open port 49153/tcp on 192.168.145.134
+Discovered open port 49154/tcp on 192.168.145.134
+Discovered open port 49156/tcp on 192.168.145.134
+Discovered open port 49157/tcp on 192.168.145.134
+Discovered open port 5357/tcp on 192.168.145.134
+Discovered open port 49152/tcp on 192.168.145.134
+Completed SYN Stealth Scan at 10:45, 1.14s elapsed (100 total ports)
+Initiating Service scan at 10:45
+Scanning 10 services on 192.168.145.134
+Service scan Timing: About 50.00% done; ETC: 10:47 (0:00:53 remaining)
+Completed Service scan at 10:46, 58.64s elapsed (10 services on 1 host)
+NSE: Script scanning 192.168.145.134.
+Initiating NSE at 10:46
+Completed NSE at 10:46, 0.04s elapsed
+Initiating NSE at 10:46
+Completed NSE at 10:46, 0.01s elapsed
+Nmap scan report for 192.168.145.134
+Host is up (0.0013s latency).
+Not shown: 90 closed tcp ports (reset)
+PORT      STATE SERVICE      VERSION
+135/tcp   open  msrpc        Microsoft Windows RPC
+139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds Microsoft Windows 7 - 10 microsoft-ds (workgroup: WORKGROUP)
+5357/tcp  open  http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+49152/tcp open  msrpc        Microsoft Windows RPC
+49153/tcp open  msrpc        Microsoft Windows RPC
+49154/tcp open  msrpc        Microsoft Windows RPC
+49155/tcp open  msrpc        Microsoft Windows RPC
+49156/tcp open  msrpc        Microsoft Windows RPC
+49157/tcp open  msrpc        Microsoft Windows RPC
+MAC Address: 00:0C:29:B5:36:A1 (VMware)
+Service Info: Host: WIN-4FER37BFKDS; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Read data files from: /usr/share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 60.34 seconds
+           Raw packets sent: 112 (4.912KB) | Rcvd: 101 (4.068KB)
+
+
+
+ sudo nmap 192.168.145.134 -D RND:11 -v                                                                                                                             
+Starting Nmap 7.95 ( https://nmap.org ) at 2025-05-27 11:18 EDT
+Initiating ARP Ping Scan at 11:18
+Scanning 192.168.145.134 [1 port]
+Completed ARP Ping Scan at 11:18, 0.17s elapsed (1 total hosts)
+Initiating Parallel DNS resolution of 1 host. at 11:18
+Completed Parallel DNS resolution of 1 host. at 11:18, 0.00s elapsed
+Initiating SYN Stealth Scan at 11:18
+Scanning 192.168.145.134 [1000 ports]
+Discovered open port 135/tcp on 192.168.145.134
+Discovered open port 139/tcp on 192.168.145.134
+Discovered open port 445/tcp on 192.168.145.134
+Increasing send delay for 192.168.145.134 from 0 to 5 due to 25 out of 83 dropped probes since last increase.
+Increasing send delay for 192.168.145.134 from 5 to 10 due to 11 out of 15 dropped probes since last increase.
+Increasing send delay for 192.168.145.134 from 10 to 20 due to 11 out of 11 dropped probes since last increase.
+Increasing send delay for 192.168.145.134 from 20 to 40 due to 11 out of 11 dropped probes since last increase.
+Discovered open port 49157/tcp on 192.168.145.134
+Discovered open port 49155/tcp on 192.168.145.134
+Discovered open port 49152/tcp on 192.168.145.134
+Discovered open port 49156/tcp on 192.168.145.134
+Discovered open port 5357/tcp on 192.168.145.134
+Discovered open port 49153/tcp on 192.168.145.134
+Discovered open port 49154/tcp on 192.168.145.134
+Completed SYN Stealth Scan at 11:18, 38.53s elapsed (1000 total ports)
+Nmap scan report for 192.168.145.134
+Host is up (0.0037s latency).
+Not shown: 990 closed tcp ports (reset)
+PORT      STATE SERVICE
+135/tcp   open  msrpc
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+5357/tcp  open  wsdapi
+49152/tcp open  unknown
+49153/tcp open  unknown
+49154/tcp open  unknown
+49155/tcp open  unknown
+49156/tcp open  unknown
+49157/tcp open  unknown
+MAC Address: 00:0C:29:B5:36:A1 (VMware)
+
+Read data files from: /usr/share/nmap
+Nmap done: 1 IP address (1 host up) scanned in 38.84 seconds
+           Raw packets sent: 13033 (573.436KB) | Rcvd: 1002 (40.108KB)
+
+┌──(kali㉿kali)-[~]
+└─$ sudo nmap 192.168.145.134 -D RND:11 -v
+Starting Nmap 7.95 ( https://nmap.org ) at 2025-05-27 11:20 EDT
+Initiating ARP Ping Scan at 11:20
+Scanning 192.168.145.134 [1 port]
+Completed ARP Ping Scan at 11:20, 0.07s elapsed (1 total hosts)
+Initiating Parallel DNS resolution of 1 host. at 11:20
+Completed Parallel DNS resolution of 1 host. at 11:20, 0.00s elapsed
+Initiating SYN Stealth Scan at 11:20
+Scanning 192.168.145.134 [1000 ports]
+Discovered open port 445/tcp on 192.168.145.134
+Discovered open port 135/tcp on 192.168.145.134
+Discovered open port 139/tcp on 192.168.145.134
+Discovered open port 5357/tcp on 192.168.145.134
+Increasing send delay for 192.168.145.134 from 0 to 5 due to 29 out of 96 dropped probes since last increase.
+Increasing send delay for 192.168.145.134 from 5 to 10 due to 11 out of 11 dropped probes since last increase.
+Increasing send delay for 192.168.145.134 from 10 to 20 due to 11 out of 11 dropped probes since last increase.
+Increasing send delay for 192.168.145.134 from 20 to 40 due to 11 out of 11 dropped probes since last increase.
+Discovered open port 49153/tcp on 192.168.145.134
+Discovered open port 49156/tcp on 192.168.145.134
+Discovered open port 49155/tcp on 192.168.145.134
+Discovered open port 49157/tcp on 192.168.145.134
+Discovered open port 49154/tcp on 192.168.145.134
+Discovered open port 49152/tcp on 192.168.145.134
+Completed SYN Stealth Scan at 11:20, 38.28s elapsed (1000 total ports)
+Nmap scan report for 192.168.145.134
+Host is up (0.0020s latency).
+Not shown: 990 closed tcp ports (reset)
+PORT      STATE SERVICE
+135/tcp   open  msrpc
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+5357/tcp  open  wsdapi
+49152/tcp open  unknown
+49153/tcp open  unknown
+49154/tcp open  unknown
+49155/tcp open  unknown
+49156/tcp open  unknown
+49157/tcp open  unknown
+MAC Address: 00:0C:29:B5:36:A1 (VMware)
+
+Read data files from: /usr/share/nmap
+Nmap done: 1 IP address (1 host up) scanned in 38.50 seconds
+           Raw packets sent: 13081 (575.548KB) | Rcvd: 1001 (40.068KB)
+
+  
