@@ -1,0 +1,138 @@
+import phonenumbers
+from phonenumbers import geocoder, carrier, timezone
+import tkinter as tk
+from tkinter import messagebox
+from tkinter import ttk  # For Combobox
+
+def get_phone_details(number_str):
+    try:
+        parsed_number = phonenumbers.parse(number_str, None)
+        is_valid = phonenumbers.is_valid_number(parsed_number)
+        
+        if not is_valid:
+            return "Invalid phone number."
+        
+        country_code = parsed_number.country_code
+        national_number = parsed_number.national_number
+        international_format = phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+        national_format = phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.NATIONAL)
+        e164_format = phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.E164)
+        location = geocoder.description_for_number(parsed_number, "en")
+        carrier_name = carrier.name_for_number(parsed_number, "en")
+        time_zones = timezone.time_zones_for_number(parsed_number)
+        
+        details = f"""
+        Phone Number: {number_str}
+        Valid: Yes
+        Country Code: +{country_code}
+        National Number: {national_number}
+        International Format: {international_format}
+        National Format: {national_format}
+        E164 Format: {e164_format}
+        Location: {location}
+        Carrier: {carrier_name if carrier_name else 'Not available'}
+        Time Zones: {', '.join(time_zones)}
+        """
+        return details.strip()
+    
+    except phonenumbers.NumberParseException:
+        return "Error parsing the number. Ensure it's in international format (e.g., +1234567890)."
+
+def on_check():
+    selected_code = country_combo.get().split(' ')[1]  # Get the code part (e.g., +1 after flag)
+    national_num = entry.get()
+    if not selected_code or not national_num:
+        messagebox.showerror("Error", "Please select a country code and enter a phone number.")
+        return
+    full_number = selected_code + national_num  # Combine (e.g., +1 + 234567890)
+    result = get_phone_details(full_number)
+    result_text.config(state='normal')  # Temporarily enable to insert text
+    result_text.delete(1.0, tk.END)
+    result_text.insert(tk.END, result)
+    result_text.config(state='disabled')  # Disable again to make it read-only
+
+def clear_fields():
+    entry.delete(0, tk.END)  # Clear the input field
+    result_text.config(state='normal')  # Temporarily enable to clear
+    result_text.delete(1.0, tk.END)
+    result_text.config(state='disabled')  # Disable again
+    country_combo.set('')  # Clear the dropdown
+
+def toggle_dark_mode():
+    global dark_mode
+    dark_mode = not dark_mode
+    apply_theme()
+
+def apply_theme():
+    if dark_mode:
+        # Dark mode colors
+        root.configure(bg="#121212")
+        label.configure(bg="#121212", fg="#FFFFFF")
+        entry.configure(bg="#333333", fg="#FFFFFF", insertbackground="#FFFFFF")
+        country_combo.configure(style="TCombobox")  # Custom style for dark mode
+        button.configure(bg="#BB86FC", fg="#000000", activebackground="#9C4DFF")
+        clear_button.configure(bg="#BB86FC", fg="#000000", activebackground="#9C4DFF")
+        dark_button.configure(bg="#BB86FC", fg="#000000", activebackground="#9C4DFF")
+        result_text.configure(bg="#1E1E1E", fg="#FFFFFF")
+        # Set Combobox style for dark mode
+        style.configure("TCombobox", fieldbackground="#333333", background="#BB86FC", foreground="#FFFFFF")
+    else:
+        # Light mode colors
+        root.configure(bg="#E0F7FA")
+        label.configure(bg="#E0F7FA", fg="#00796B")
+        entry.configure(bg="#FFFFFF", fg="#000000", insertbackground="#000000")
+        country_combo.configure(style="TCombobox")
+        button.configure(bg="#4CAF50", fg="#FFFFFF", activebackground="#45A049")
+        clear_button.configure(bg="#4CAF50", fg="#FFFFFF", activebackground="#45A049")
+        dark_button.configure(bg="#4CAF50", fg="#FFFFFF", activebackground="#45A049")
+        result_text.configure(bg="#F1F8E9", fg="#2E7D32")
+        # Set Combobox style for light mode
+        style.configure("TCombobox", fieldbackground="#FFFFFF", background="#4CAF50", foreground="#000000")
+
+# GUI Setup
+root = tk.Tk()
+root.title("Phone Number Details ALAN")
+root.geometry("500x400")
+
+dark_mode = False  # Start in light mode
+
+# Style for Combobox
+style = ttk.Style()
+style.theme_use('default')
+
+label = tk.Label(root, text="Select Country Code and Enter Phone Number:", font=("Arial", 12, "bold"))
+label.pack(pady=10)
+
+# Frame for dropdown and input
+input_frame = tk.Frame(root)
+input_frame.pack(pady=5)
+
+# Country code dropdown with flags (common codes; flags added where available)
+country_codes = [
+    "🇺🇸 +1 (United States)", "🇷🇺 +7 (Russia)", "🇪🇬 +20 (Egypt)", "🇿🇦 +27 (South Africa)", "🇬🇷 +30 (Greece)", "🇳🇱 +31 (Netherlands)", "🇧🇪 +32 (Belgium)", "🇫🇷 +33 (France)", "🇪🇸 +34 (Spain)", "🇭🇺 +36 (Hungary)", "🇮🇹 +39 (Italy)", "🇷🇴 +40 (Romania)", "🇨🇭 +41 (Switzerland)", "🇦🇹 +43 (Austria)", "🇬🇧 +44 (United Kingdom)", "🇩🇰 +45 (Denmark)", "🇸🇪 +46 (Sweden)", "🇳🇴 +47 (Norway)", "🇵🇱 +48 (Poland)", "🇩🇪 +49 (Germany)", "🇵🇪 +51 (Peru)", "🇲🇽 +52 (Mexico)", "🇨🇺 +53 (Cuba)", "🇦🇷 +54 (Argentina)", "🇧🇷 +55 (Brazil)", "🇨🇱 +56 (Chile)", "🇨🇴 +57 (Colombia)", "🇻🇪 +58 (Venezuela)", "🇲🇾 +60 (Malaysia)", "🇦🇺 +61 (Australia)", "🇮🇩 +62 (Indonesia)", "🇵🇭 +63 (Philippines)", "🇳🇿 +64 (New Zealand)", "🇸🇬 +65 (Singapore)", "🇹🇭 +66 (Thailand)", "🇯🇵 +81 (Japan)", "🇰🇷 +82 (South Korea)", "🇻🇳 +84 (Vietnam)", "🇨🇳 +86 (China)", "🇹🇷 +90 (Turkey)", "🇮🇳 +91 (India)", "🇵🇰 +92 (Pakistan)", "🇦🇫 +93 (Afghanistan)", "🇱🇰 +94 (Sri Lanka)", "🇲🇲 +95 (Myanmar)", "🇮🇷 +98 (Iran)", "🇲🇦 +212 (Morocco)", "🇩🇿 +213 (Algeria)", "🇹🇳 +216 (Tunisia)", "🇱🇾 +218 (Libya)", "🇬🇲 +220 (Gambia)", "🇸🇳 +221 (Senegal)", "🇲🇷 +222 (Mauritania)", "🇲🇱 +223 (Mali)", "🇬🇳 +224 (Guinea)", "🇨🇮 +225 (Ivory Coast)", "🇧🇫 +226 (Burkina Faso)", "🇳🇪 +227 (Niger)", "🇹🇬 +228 (Togo)", "🇧🇯 +229 (Benin)", "🇲🇺 +230 (Mauritius)", "🇱🇷 +231 (Liberia)", "🇸🇱 +232 (Sierra Leone)", "🇬🇭 +233 (Ghana)", "🇳🇬 +234 (Nigeria)", "🇹🇩 +235 (Chad)", "🇨🇫 +236 (Central African Republic)", "🇨🇲 +237 (Cameroon)", "🇨🇻 +238 (Cape Verde)", "🇸🇹 +239 (Sao Tome and Principe)", "🇬🇶 +240 (Equatorial Guinea)", "🇬🇦 +241 (Gabon)", "🇨🇬 +242 (Republic of the Congo)", "🇨🇩 +243 (Democratic Republic of the Congo)", "🇦🇴 +244 (Angola)", "🇬🇼 +245 (Guinea-Bissau)", "🇮🇴 +246 (British Indian Ocean Territory)", "🇸🇨 +248 (Seychelles)", "🇸🇩 +249 (Sudan)", "🇷🇼 +250 (Rwanda)", "🇪🇹 +251 (Ethiopia)", "🇸🇴 +252 (Somalia)", "🇩🇯 +253 (Djibouti)", "🇰🇪 +254 (Kenya)", "🇹🇿 +255 (Tanzania)", "🇺🇬 +256 (Uganda)", "🇧🇮 +257 (Burundi)", "🇲🇿 +258 (Mozambique)", "🇿🇲 +260 (Zambia)", "🇲🇬 +261 (Madagascar)", "🇷🇪 +262 (Reunion)", "🇿🇼 +263 (Zimbabwe)", "🇳🇦 +264 (Namibia)", "🇲🇼 +265 (Malawi)", "🇱🇸 +266 (Lesotho)", "🇧🇼 +267 (Botswana)", "🇸🇿 +268 (Swaziland)", "🇰🇲 +269 (Comoros)", "🇸🇭 +290 (Saint Helena)", "🇪🇷 +291 (Eritrea)", "🇦🇼 +297 (Aruba)", "🇫🇴 +298 (Faroe Islands)", "🇬🇱 +299 (Greenland)", "🇬🇮 +350 (Gibraltar)", "🇵🇹 +351 (Portugal)", "🇱🇺 +352 (Luxembourg)", "🇮🇪 +353 (Ireland)", "🇮🇸 +354 (Iceland)", "🇦🇱 +355 (Albania)", "🇲🇹 +356 (Malta)", "🇨🇾 +357 (Cyprus)", "🇫🇮 +358 (Finland)", "🇧🇬 +359 (Bulgaria)", "🇱🇹 +370 (Lithuania)", "🇱🇻 +371 (Latvia)", "🇪🇪 +372 (Estonia)", "🇲🇩 +373 (Moldova)", "🇦🇲 +374 (Armenia)", "🇧🇾 +375 (Belarus)", "🇦🇩 +376 (Andorra)", "🇲🇨 +377 (Monaco)", "🇸🇲 +378 (San Marino)", "🇺🇦 +380 (Ukraine)", "🇷🇸 +381 (Serbia)", "🇲🇪 +382 (Montenegro)", "🇽🇰 +383 (Kosovo)", "🇭🇷 +385 (Croatia)", "🇸🇮 +386 (Slovenia)", "🇧🇦 +387 (Bosnia and Herzegovina)", "🇲🇰 +389 (Macedonia)", "🇨🇿 +420 (Czech Republic)", "🇸🇰 +421 (Slovakia)", "🇱🇮 +423 (Liechtenstein)", "🇫🇰 +500 (Falkland Islands)", "🇧🇿 +501 (Belize)", "🇬🇹 +502 (Guatemala)", "🇸🇻 +503 (El Salvador)", "🇭🇳 +504 (Honduras)", "🇳🇮 +505 (Nicaragua)", "🇨🇷 +506 (Costa Rica)", "🇵🇦 +507 (Panama)", "🇵🇲 +508 (Saint Pierre and Miquelon)", "🇭🇹 +509 (Haiti)", "🇬🇵 +590 (Guadeloupe)", "🇧🇴 +591 (Bolivia)", "🇬🇾 +592 (Guyana)", "🇪🇨 +593 (Ecuador)", "🇬🇫 +594 (French Guiana)", "🇵🇾 +595 (Paraguay)", "🇲🇶 +596 (Martinique)", "🇸🇷 +597 (Suriname)", "🇺🇾 +598 (Uruguay)", "🇧🇶 +599 (Netherlands Antilles)", "🇹🇱 +670 (East Timor)", "🇦🇶 +672 (Antarctica)", "🇧🇳 +673 (Brunei)", "🇳🇷 +674 (Nauru)", "🇵🇬 +675 (Papua New Guinea)", "🇹🇴 +676 (Tonga)", "🇸🇧 +677 (Solomon Islands)", "🇻🇺 +678 (Vanuatu)", "🇫🇯 +679 (Fiji)", "🇵🇼 +680 (Palau)", "🇼🇫 +681 (Wallis and Futuna)", "🇨🇰 +682 (Cook Islands)", "🇳🇺 +683 (Niue)", "🇦🇸 +684 (American Samoa)", "🇼🇸 +685 (Samoa)", "🇰🇮 +686 (Kiribati)", "🇳🇨 +687 (New Caledonia)", "🇹🇻 +688 (Tuvalu)", "🇵🇫 +689 (French Polynesia)", "🇹🇰 +690 (Tokelau)", "🇫🇲 +691 (Micronesia)", "🇲🇭 +692 (Marshall Islands)", "🇰🇵 +850 (North Korea)", "🇭🇰 +852 (Hong Kong)", "🇲🇴 +853 (Macau)", "🇰🇭 +855 (Cambodia)", "🇱🇦 +856 (Laos)", "🇧🇩 +880 (Bangladesh)", "🇹🇼 +886 (Taiwan)", "🇲🇻 +960 (Maldives)", "🇱🇧 +961 (Lebanon)", "🇯🇴 +962 (Jordan)", "🇸🇾 +963 (Syria)", "🇮🇶 +964 (Iraq)", "🇰🇼 +965 (Kuwait)", "🇸🇦 +966 (Saudi Arabia)", "🇾🇪 +967 (Yemen)", "🇴🇲 +968 (Oman)", "🇵🇸 +970 (Palestine)", "🇦🇪 +971 (United Arab Emirates)", "🇮🇱 +972 (Israel)", "🇧🇭 +973 (Bahrain)", "🇶🇦 +974 (Qatar)", "🇧🇹 +975 (Bhutan)", "🇲🇳 +976 (Mongolia)", "🇳🇵 +977 (Nepal)", "🇹🇯 +992 (Tajikistan)", "🇹🇲 +993 (Turkmenistan)", "🇦🇿 +994 (Azerbaijan)", "🇬🇪 +995 (Georgia)", "🇰🇬 +996 (Kyrgyzstan)", "🇺🇿 +998 (Uzbekistan)"
+]
+country_combo = ttk.Combobox(input_frame, values=country_codes, width=30, font=("Arial", 10))
+country_combo.pack(side=tk.LEFT, padx=5)
+country_combo.set("Select Country Code")  # Default text
+
+entry = tk.Entry(input_frame, width=25, font=("Arial", 10))
+entry.pack(side=tk.LEFT, padx=5)
+
+# Frame for buttons in one line
+button_frame = tk.Frame(root)
+button_frame.pack(pady=10)
+
+button = tk.Button(button_frame, text="Check Details", command=on_check, font=("Arial", 10, "bold"))
+button.pack(side=tk.LEFT, padx=5)
+
+clear_button = tk.Button(button_frame, text="Clear", command=clear_fields, font=("Arial", 10, "bold"))
+clear_button.pack(side=tk.LEFT, padx=5)
+
+dark_button = tk.Button(button_frame, text="Toggle Dark Mode", command=toggle_dark_mode, font=("Arial", 10, "bold"))
+dark_button.pack(side=tk.LEFT, padx=5)
+
+result_text = tk.Text(root, height=15, width=60, font=("Arial", 10), state='disabled')  # Made read-only
+result_text.pack(pady=10)
+
+apply_theme()  # Apply initial theme
+root.mainloop()
