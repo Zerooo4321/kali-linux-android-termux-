@@ -1,0 +1,223 @@
+import tkinter as tk
+from tkinter import filedialog, messagebox
+import base64
+import os
+import string
+import random
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.fernet import Fernet
+
+# ---------- Encryption Logic ----------
+def generate_key(password: str, salt: bytes):
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000,
+    )
+    return base64.urlsafe_b64encode(kdf.derive(password.encode()))
+
+def encrypt_data(data, password):
+    salt = os.urandom(16)
+    key = generate_key(password, salt)
+    return salt + Fernet(key).encrypt(data)
+
+def decrypt_data(data, password):
+    salt = data[:16]
+    encrypted = data[16:]
+    key = generate_key(password, salt)
+    return Fernet(key).decrypt(encrypted)
+
+# ---------- File Lock ----------
+def lock_file():
+    file_path = path_var.get()
+    if not file_path or not password_entry.get():
+        messagebox.showerror("Error", "File aur Password required hai")
+        return
+    if not os.path.isfile(file_path):
+        messagebox.showerror("Error", "❌ Valid File select kare")
+        return
+
+    with open(file_path, "rb") as f:
+        data = f.read()
+
+    encrypted = encrypt_data(data, password_entry.get())
+
+    with open(file_path, "wb") as f:
+        f.write(encrypted)
+
+    messagebox.showinfo("Success", "🔒 File LOCK ho gayi")
+
+def unlock_file():
+    file_path = path_var.get()
+    if not file_path or not password_entry.get():
+        messagebox.showerror("Error", "File aur Password required hai")
+        return
+    if not os.path.isfile(file_path):
+        messagebox.showerror("Error", "❌ Valid File select kare")
+        return
+
+    try:
+        with open(file_path, "rb") as f:
+            data = f.read()
+
+        decrypted = decrypt_data(data, password_entry.get())
+
+        with open(file_path, "wb") as f:
+            f.write(decrypted)
+
+        messagebox.showinfo("Success", "🔓 File UNLOCK ho gayi")
+    except:
+        messagebox.showerror("Error", "❌ Galat Password ya File me problem")
+
+# ---------- Folder Lock ----------
+def lock_folder():
+    folder_path = path_var.get()
+    if not folder_path or not password_entry.get():
+        messagebox.showerror("Error", "Folder aur Password required hai")
+        return
+    if not os.path.isdir(folder_path):
+        messagebox.showerror("Error", "❌ Valid Folder select kare")
+        return
+
+    for root_dir, _, files in os.walk(folder_path):
+        for file in files:
+            file_path = os.path.join(root_dir, file)
+            with open(file_path, "rb") as f:
+                data = f.read()
+            encrypted = encrypt_data(data, password_entry.get())
+            with open(file_path, "wb") as f:
+                f.write(encrypted)
+
+    messagebox.showinfo("Success", "📁 Folder LOCK ho gaya")
+
+def unlock_folder():
+    folder_path = path_var.get()
+    if not folder_path or not password_entry.get():
+        messagebox.showerror("Error", "Folder aur Password required hai")
+        return
+    if not os.path.isdir(folder_path):
+        messagebox.showerror("Error", "❌ Valid Folder select kare")
+        return
+
+    try:
+        for root_dir, _, files in os.walk(folder_path):
+            for file in files:
+                file_path = os.path.join(root_dir, file)
+                with open(file_path, "rb") as f:
+                    data = f.read()
+                decrypted = decrypt_data(data, password_entry.get())
+                with open(file_path, "wb") as f:
+                    f.write(decrypted)
+
+        messagebox.showinfo("Success", "📂 Folder UNLOCK ho gaya")
+    except:
+        messagebox.showerror("Error", "❌ Galat Password ya Folder me problem")
+
+# ---------- Browse ----------
+def browse_file():
+    path_var.set(filedialog.askopenfilename())
+
+def browse_folder():
+    path_var.set(filedialog.askdirectory())
+
+# ---------- Show / Hide Password ----------
+def toggle_password():
+    global show_pass
+    if show_pass:
+        password_entry.config(show="*")
+        eye_btn.config(text="👁️")
+        show_pass = False
+    else:
+        password_entry.config(show="")
+        eye_btn.config(text="🙈")
+        show_pass = True
+
+# ---------- Clear Fields ----------
+def clear_fields():
+    path_var.set("")
+    password_entry.delete(0, tk.END)
+
+# ---------- Generate Strong Password ----------
+def generate_password(length=12):
+    if length < 6:
+        length = 12  # minimum safe length
+    all_chars = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(all_chars) for _ in range(length))
+    password_entry.delete(0, tk.END)
+    password_entry.insert(0, password)
+
+# ---------- GUI ----------
+root = tk.Tk()
+root.title("🔐 File & Folder Locker App")
+root.geometry("560x480")
+root.configure(bg="#1e1e2e")
+
+path_var = tk.StringVar()
+show_pass = False
+
+tk.Label(root, text="FILE & FOLDER LOCKER",
+         font=("Arial", 18, "bold"),
+         bg="#1e1e2e", fg="#00ffcc").pack(pady=10)
+
+frame = tk.Frame(root, bg="#2a2a3d")
+frame.pack(padx=20, pady=10, fill="both")
+
+tk.Entry(frame, textvariable=path_var,
+         width=50, justify="center").pack(pady=8)
+
+tk.Button(frame, text="Browse File",
+          command=browse_file,
+          bg="#00ffcc", width=15).pack(pady=4)
+
+tk.Button(frame, text="Browse Folder",
+          command=browse_folder,
+          bg="#00ccff", width=15).pack(pady=4)
+
+tk.Label(frame, text="Enter Password",
+         bg="#2a2a3d", fg="white").pack(pady=8)
+
+pass_frame = tk.Frame(frame, bg="#2a2a3d")
+pass_frame.pack(pady=5)
+
+password_entry = tk.Entry(pass_frame, show="*", width=25, justify="center")
+password_entry.grid(row=0, column=0, padx=5)
+
+eye_btn = tk.Button(pass_frame, text="👁️",
+                    command=toggle_password,
+                    bg="#ffaa00", width=4)
+eye_btn.grid(row=0, column=1)
+
+# Generate Password Button
+gen_pass_btn = tk.Button(pass_frame, text="🎲 Generate",
+                         command=generate_password,
+                         bg="#00ffaa", fg="black", width=10)
+gen_pass_btn.grid(row=0, column=2, padx=5)
+
+# ---------- Buttons ----------
+btn_frame = tk.Frame(root, bg="#1e1e2e")
+btn_frame.pack(pady=15)
+
+tk.Button(btn_frame, text="🔒 LOCK FILE",
+          command=lock_file,
+          bg="#ff4c4c", fg="white",
+          width=15).grid(row=0, column=0, padx=8)
+
+tk.Button(btn_frame, text="🔓 UNLOCK FILE",
+          command=unlock_file,
+          bg="#4cff4c", width=15).grid(row=0, column=1, padx=8)
+
+tk.Button(btn_frame, text="📁 LOCK FOLDER",
+          command=lock_folder,
+          bg="#ff9933", width=15).grid(row=1, column=0, padx=8, pady=8)
+
+tk.Button(btn_frame, text="📂 UNLOCK FOLDER",
+          command=unlock_folder,
+          bg="#33ccff", width=15).grid(row=1, column=1, padx=8, pady=8)
+
+tk.Button(btn_frame, text="🧹 CLEAR",
+          command=clear_fields,
+          bg="#888888", fg="white", width=32).grid(row=2, column=0, columnspan=2, pady=8)
+
+root.mainloop()
